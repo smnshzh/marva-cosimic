@@ -41,10 +41,12 @@ export const getCategories = async () => {
   const { data, error } = await supabase
     .from('categories')
     .select('*')
-    .eq('is_active', true)
     .order('name')
 
-  if (error) throw error
+  if (error) {
+    console.error('Supabase error:', error)
+    throw new Error(`خطا در دریافت دسته‌بندی‌ها: ${error.message}`)
+  }
   return data
 }
 
@@ -56,7 +58,10 @@ export const createCategory = async (category: Database['public']['Tables']['cat
     .select()
     .single()
 
-  if (error) throw error
+  if (error) {
+    console.error('Supabase error:', error)
+    throw new Error(`خطا در ایجاد دسته‌بندی: ${error.message}`)
+  }
   return data
 }
 

@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { getCategories } from "@/lib/supabase"
+import { createCategory } from "@/lib/supabase/helpers"
 import type { Database } from "@/lib/supabase"
 
 export default function AdminCategoryNewPage() {
@@ -48,7 +49,6 @@ export default function AdminCategoryNewPage() {
     setSubmitting(true)
     setError(null)
     try {
-      const { createCategory } = await import('@/lib/supabase')
       await createCategory({
         name: form.name,
         description: form.description || null,
