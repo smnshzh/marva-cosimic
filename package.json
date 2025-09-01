@@ -9,6 +9,10 @@
     "lint": "next lint",
     "build:static": "next build",
     "export": "next build && next export",
+    "deploy:cloudflare": "npm run build:static && wrangler deploy --env production",
+    "deploy:cloudflare:staging": "npm run build:static && wrangler deploy --env staging",
+    "deploy:cloudflare:dev": "npm run build:static && wrangler deploy --env development",
+    "deploy:auto": "node scripts/deploy.js",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio"

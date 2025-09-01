@@ -26,9 +26,13 @@ database_name = "marva-cosmic-db-dev"
 database_id = "your-staging-database-id-here"
 
 [build]
-command = "npm run pages:build"
+command = "npm run build:static"
 
 [[r2_buckets]]
 binding = "ASSETS"
 bucket_name = "marva-cosmic-assets"
 preview_bucket_name = "marva-cosmic-assets-dev"
+
+# Static assets configuration
+[assets]
+directory = ".next/static"

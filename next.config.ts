@@ -7,6 +7,8 @@ const nextConfig: NextConfig = {
     unoptimized: true,
   },
   serverExternalPackages: ['@cloudflare/workers-types'],
+  // Fix workspace root issue
+  outputFileTracingRoot: process.cwd(),
 };
 
 export default nextConfig;
