@@ -1,0 +1,5 @@
+# Redirect all API calls to the fallback
+/api/* /api/fallback.html 404
+
+# SPA fallback for client-side routing
+/* /index.html 200

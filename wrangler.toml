@@ -1,0 +1,34 @@
+name = "marva-cosmic"
+compatibility_date = "2024-01-01"
+
+[env.production]
+name = "marva-cosmic-prod"
+
+[[env.production.d1_databases]]
+binding = "DB"
+database_name = "marva-cosmic-db"
+database_id = "your-database-id-here"
+
+[env.staging]
+name = "marva-cosmic-staging"
+
+[[env.staging.d1_databases]]
+binding = "DB"
+database_name = "marva-cosmic-db-staging"
+database_id = "your-staging-database-id-here"
+
+[env.development]
+name = "marva-cosmic-dev"
+
+[[env.development.d1_databases]]
+binding = "DB"
+database_name = "marva-cosmic-db-dev"
+database_id = "your-staging-database-id-here"
+
+[build]
+command = "npm run pages:build"
+
+[[r2_buckets]]
+binding = "ASSETS"
+bucket_name = "marva-cosmic-assets"
+preview_bucket_name = "marva-cosmic-assets-dev"
