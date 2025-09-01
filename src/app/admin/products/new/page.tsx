@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import { getCategories } from "@/lib/supabase"
+import { getCategories, createProduct } from "@/lib/supabase"
 import type { Database } from "@/lib/supabase"
 import { ImageUpload } from "@/components/ui/image-upload"
 
@@ -55,27 +55,20 @@ export default function AdminProductNewPage() {
     setSubmitting(true)
     setError(null)
     try {
-      const res = await fetch('/api/products', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: form.name,
-          description: form.description || null,
-          price: Number(form.price),
-          original_price: form.original_price ? Number(form.original_price) : null,
-          discount_percentage: form.discount_percentage ? Number(form.discount_percentage) : null,
-          category_id: form.category_id,
-          brand: form.brand || null,
-          images: images,
-          stock: Number(form.stock || '0'),
-          is_active: form.is_active,
-        }),
-      })
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({}))
-        throw new Error(data?.error || 'خطا در ثبت محصول')
+      const productData = {
+        name: form.name,
+        description: form.description || null,
+        price: Number(form.price),
+        original_price: form.original_price ? Number(form.original_price) : null,
+        discount_percentage: form.discount_percentage ? Number(form.discount_percentage) : null,
+        category_id: form.category_id,
+        brand: form.brand || null,
+        images: images,
+        stock: Number(form.stock || '0'),
+        is_active: form.is_active,
       }
-      await res.json()
+      
+      await createProduct(productData)
       router.push('/admin/products')
     } catch (e: any) {
       setError(e?.message || 'خطای نامشخص')
