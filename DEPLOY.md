@@ -7,21 +7,14 @@
 npm run deploy:cloudflare
 ```
 
-### 2. 🔄 Deploy خودکار (با اسکریپت):
+### 2. 🔄 Deploy خودکار:
 ```bash
 npm run deploy:auto
 ```
 
-### 3. 🌍 Deploy برای محیط‌های مختلف:
+### 3. 🏗️ Build جداگانه:
 ```bash
-# Production
-npm run deploy:cloudflare
-
-# Staging  
-npm run deploy:cloudflare:staging
-
-# Development
-npm run deploy:cloudflare:dev
+npm run build:cloudflare
 ```
 
 ## 📋 پیش‌نیازها:

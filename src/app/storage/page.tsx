@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
 
 export default function FileManager() {
-  const [files, setFiles] = useState<any[]>([]);
+  const [files, setFiles] = useState<Array<{Key: string, Size?: number, LastModified?: string}>>([]);
   const [file, setFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');

@@ -6,7 +6,7 @@ import Link from "next/link"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Badge } from "@/components/ui/badge"
+
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { getCategories, createProduct } from "@/lib/supabase"
@@ -40,8 +40,8 @@ export default function AdminProductNewPage() {
         setLoadingCats(true)
         const cats = await getCategories()
         if (!ignore) setCategories(cats || [])
-      } catch (e: any) {
-        if (!ignore) setError(e?.message || 'خطا در دریافت دسته‌بندی‌ها')
+      } catch (e: unknown) {
+        if (!ignore) setError(e instanceof Error ? e.message : 'خطا در دریافت دسته‌بندی‌ها')
       } finally {
         if (!ignore) setLoadingCats(false)
       }
@@ -70,8 +70,8 @@ export default function AdminProductNewPage() {
       
       await createProduct(productData)
       router.push('/admin/products')
-    } catch (e: any) {
-      setError(e?.message || 'خطای نامشخص')
+    } catch (e: unknown) {
+      setError(e instanceof Error ? e.message : 'خطای نامشخص')
     } finally {
       setSubmitting(false)
     }

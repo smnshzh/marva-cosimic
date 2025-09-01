@@ -9,6 +9,8 @@ const nextConfig: NextConfig = {
   serverExternalPackages: ['@cloudflare/workers-types'],
   // Fix workspace root issue
   outputFileTracingRoot: process.cwd(),
+  // Ensure static export works properly
+  distDir: 'out',
 };
 
 export default nextConfig;

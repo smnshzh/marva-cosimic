@@ -40,8 +40,8 @@ export default function AdminCategoriesPage() {
         if (!res.ok) throw new Error('خطا در دریافت دسته‌بندی‌ها')
         const data = await res.json()
         if (!ignore) setCategories(data.categories || [])
-      } catch (e: any) {
-        if (!ignore) setError(e?.message || 'خطای نامشخص')
+      } catch (e: unknown) {
+        if (!ignore) setError(e instanceof Error ? e.message : 'خطای نامشخص')
       } finally {
         if (!ignore) setLoading(false)
       }

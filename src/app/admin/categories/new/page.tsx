@@ -33,8 +33,8 @@ export default function AdminCategoryNewPage() {
         setLoadingCats(true)
         const cats = await getCategories()
         if (!ignore) setCategories(cats || [])
-      } catch (e: any) {
-        if (!ignore) setError(e?.message || 'خطا در دریافت دسته‌بندی‌ها')
+      } catch (e: unknown) {
+        if (!ignore) setError(e instanceof Error ? e.message : 'خطا در دریافت دسته‌بندی‌ها')
       } finally {
         if (!ignore) setLoadingCats(false)
       }
@@ -65,8 +65,8 @@ export default function AdminCategoryNewPage() {
       }
       await res.json()
       router.push('/admin/categories')
-    } catch (e: any) {
-      setError(e?.message || 'خطای نامشخص')
+    } catch (e: unknown) {
+      setError(e instanceof Error ? e.message : 'خطای نامشخص')
     } finally {
       setSubmitting(false)
     }
