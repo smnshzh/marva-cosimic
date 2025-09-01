@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { useRouter, useParams } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -15,8 +15,8 @@ import type { Database } from "@/lib/supabase"
 
 export default function AdminProductEditPage() {
   const router = useRouter()
-  const params = useParams()
-  const productId = params.id as string
+  const searchParams = useSearchParams()
+  const productId = searchParams.get('id')
 
   const [categories, setCategories] = useState<Database['public']['Tables']['categories']['Row'][]>([])
   const [loading, setLoading] = useState(true)
@@ -30,12 +30,18 @@ export default function AdminProductEditPage() {
     stock: "",
     brand: "",
     category_id: "",
-    image_urls: [] as string[],
+    images: [] as string[],
     is_active: true,
   })
   const [submitting, setSubmitting] = useState(false)
 
   useEffect(() => {
+    if (!productId) {
+      setError('شناسه محصول مشخص نشده است')
+      setLoading(false)
+      return
+    }
+
     let ignore = false
     async function load() {
       try {
@@ -57,7 +63,7 @@ export default function AdminProductEditPage() {
             stock: prod.stock?.toString() || "",
             brand: prod.brand || "",
             category_id: prod.category_id || "",
-            image_urls: prod.image_urls || [],
+            images: prod.images || [],
             is_active: prod.is_active ?? true,
           })
         }
@@ -73,6 +79,8 @@ export default function AdminProductEditPage() {
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault()
+    if (!productId) return
+    
     setSubmitting(true)
     setError(null)
     try {
@@ -82,8 +90,8 @@ export default function AdminProductEditPage() {
         price: parseFloat(form.price) || 0,
         stock: parseInt(form.stock) || 0,
         brand: form.brand || null,
-        category_id: form.category_id || null,
-        image_urls: form.image_urls,
+        category_id: form.category_id || undefined,
+        images: form.images,
         is_active: form.is_active,
       })
       router.push('/admin/products')
@@ -92,6 +100,20 @@ export default function AdminProductEditPage() {
     } finally {
       setSubmitting(false)
     }
+  }
+
+  if (!productId) {
+    return (
+      <div className="space-y-6">
+        <div className="text-center py-8">
+          <h2 className="text-xl font-semibold mb-2">شناسه محصول مشخص نشده</h2>
+          <p className="text-gray-600 mb-4">لطفاً از طریق لیست محصولات، محصول مورد نظر را انتخاب کنید.</p>
+          <Button asChild>
+            <Link href="/admin/products">بازگشت به لیست محصولات</Link>
+          </Button>
+        </div>
+      </div>
+    )
   }
 
   if (loading) {
@@ -213,8 +235,8 @@ export default function AdminProductEditPage() {
             <div className="md:col-span-2">
               <Label>تصاویر محصول</Label>
               <ImageUpload
-                images={form.image_urls}
-                onChange={(urls) => setForm({ ...form, image_urls: urls })}
+                value={form.images}
+                onChange={(urls) => setForm({ ...form, images: urls })}
               />
             </div>
             <div className="md:col-span-2 flex items-center justify-end gap-3 mt-4">

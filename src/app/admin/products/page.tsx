@@ -194,7 +194,7 @@ export default function AdminProductsPage() {
                             </Link>
                           </DropdownMenuItem>
                           <DropdownMenuItem asChild>
-                            <Link href={`/admin/products/${product.id}/edit`} className="flex items-center">
+                            <Link href={`/admin/products/edit?id=${product.id}`} className="flex items-center">
                               <Edit className="mr-2 h-4 w-4" />
                               ویرایش
                             </Link>
