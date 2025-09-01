@@ -48,6 +48,18 @@ export const getCategories = async () => {
   return data
 }
 
+export const createCategory = async (category: Database['public']['Tables']['categories']['Insert']) => {
+  const supabase = createClient()
+  const { data, error } = await supabase
+    .from('categories')
+    .insert(category)
+    .select()
+    .single()
+
+  if (error) throw error
+  return data
+}
+
 export const createProduct = async (product: Database['public']['Tables']['products']['Insert']) => {
   const supabase = createClient()
   const { data, error } = await supabase

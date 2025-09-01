@@ -48,22 +48,14 @@ export default function AdminCategoryNewPage() {
     setSubmitting(true)
     setError(null)
     try {
-      const res = await fetch('/api/categories', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: form.name,
-          description: form.description || null,
-          image_url: form.image_url || null,
-          parent_id: form.parent_id || null,
-          is_active: form.is_active,
-        }),
+      const { createCategory } = await import('@/lib/supabase')
+      await createCategory({
+        name: form.name,
+        description: form.description || null,
+        image_url: form.image_url || null,
+        parent_id: form.parent_id || null,
+        is_active: form.is_active,
       })
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({}))
-        throw new Error(data?.error || 'خطا در ثبت دسته‌بندی')
-      }
-      await res.json()
       router.push('/admin/categories')
     } catch (e: unknown) {
       setError(e instanceof Error ? e.message : 'خطای نامشخص')

@@ -12,11 +12,8 @@ const nextConfig: NextConfig = {
   // Ensure static export works properly
   distDir: 'out',
   // Disable tracing to avoid permission issues
-  experimental: {
-    serverComponentsExternalPackages: ['@cloudflare/workers-types'],
-    outputFileTracingExcludes: {
-      '*': ['./node_modules/@swc/core-linux-x64-gnu', './node_modules/@swc/core-linux-x64-musl'],
-    },
+  outputFileTracingExcludes: {
+    '*': ['./node_modules/@swc/core-linux-x64-gnu', './node_modules/@swc/core-linux-x64-musl'],
   },
 };
 

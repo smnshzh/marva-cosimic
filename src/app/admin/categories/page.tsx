@@ -22,6 +22,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { getCategories } from "@/lib/supabase"
 import type { Database } from "@/lib/supabase"
 
 export default function AdminCategoriesPage() {
@@ -36,10 +37,8 @@ export default function AdminCategoriesPage() {
       try {
         setLoading(true)
         setError(null)
-        const res = await fetch('/api/categories')
-        if (!res.ok) throw new Error('خطا در دریافت دسته‌بندی‌ها')
-        const data = await res.json()
-        if (!ignore) setCategories(data.categories || [])
+        const cats = await getCategories()
+        if (!ignore) setCategories(cats || [])
       } catch (e: unknown) {
         if (!ignore) setError(e instanceof Error ? e.message : 'خطای نامشخص')
       } finally {
@@ -54,6 +53,12 @@ export default function AdminCategoriesPage() {
     category.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     category.description?.toLowerCase().includes(searchTerm.toLowerCase())
   )
+
+  const getParentName = (parentId: string | null) => {
+    if (!parentId) return null
+    const parent = categories.find(cat => cat.id === parentId)
+    return parent?.name || null
+  }
 
   return (
     <div className="space-y-6">
@@ -123,6 +128,16 @@ export default function AdminCategoriesPage() {
                 {category.description || 'بدون توضیحات'}
               </p>
               
+              {/* Parent Category */}
+              {category.parent_id && (
+                <div className="mb-4">
+                  <p className="text-sm text-gray-500">دسته‌بندی والد:</p>
+                  <Badge variant="outline" className="text-xs">
+                    {getParentName(category.parent_id) || 'نامشخص'}
+                  </Badge>
+                </div>
+              )}
+              
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2 space-x-reverse">
                   <div className="w-16 h-16 bg-gradient-to-br from-pink-100 to-purple-100 rounded-lg flex-shrink-0" />
@@ -157,7 +172,7 @@ export default function AdminCategoriesPage() {
       </div>
 
       {/* Empty State */}
-      {filteredCategories.length === 0 && (
+      {filteredCategories.length === 0 && !loading && (
         <Card>
           <CardContent className="text-center py-12">
             <FolderTree className="h-12 w-12 text-gray-400 mx-auto mb-4" />
