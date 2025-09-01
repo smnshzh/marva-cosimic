@@ -102,7 +102,7 @@ export default function TestDBPage() {
              </pre>
            </div>
            
-           {data.insertTest && (
+                       {data.insertTest !== undefined && (
              <div>
                <h2 className="text-lg font-semibold mb-2">تست Insert موفق</h2>
                <pre className="bg-green-100 p-3 rounded text-sm overflow-auto">
